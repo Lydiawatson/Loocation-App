@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+        <title>Loocation</title>
+        <link rel="stylesheet" type="text/css" href="css/normalize.css"/>
+        <link rel="stylesheet" type="text/css" href="css/styles.css"/>
+        <!-- Database Script -->
+        <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+         <!-- GeoFire -->
+        <script src="https://cdn.firebase.com/libs/geofire/4.0.0/geofire.min.js"></script>   
+    </head>
+    
+    <body>
+        <!--dims background when pop up is open-->
+        <div id="dimmer"></div>
+        
+        <!-- popUp displaying credits/attributions -->
+        <div class="credits" id="credits">
+            <img class="closeCred" src="img/backArrow.svg" id="closeCred">
+            <div class="creditsContent">
+                <div class="creditsHeading"><h1>Loocation would love to thank:</h1></div>
+                <div class="creditsScroll">
+                    <h2>Our mentors:</h2>Jade Shearstone, Rebecca Hill, and Genny Stevens from Xero, for helping us complete this app, and putting up with every groan and problem from us along the way.
+                    <hr>
+            
+                    <p>We'd also like to credit the artists who designed the icons used within this app. Icons were made by the artists 
+                        <a href="#" title="Freepik" onclick="window.open('http://www.freepik.com', '_system');">Freepik</a>, 
+
+                        <a href="#" title="Anton Saputro" onclick="window.open('http://www.flaticon.com/authors/anton-saputro', '_system');">Anton Saputro</a>, 
+
+                        <a href="#" title="Lyolya" onclick="window.open('http://www.flaticon.com/authors/lyolya', '_system');">Lyolya</a>, 
+                        <a href="#" title="OCHA" onclick="window.open('http://www.flaticon.com/authors/ocha', '_system');">OCHA</a>, 
+                        <a href="#" title="Vectors Market" onclick="window.open('http://www.flaticon.com/authors/vectors-market', '_system');">Vectors Market</a>, 
+                        <a href="#" title="Plainicon" onclick="window.open('http://www.flaticon.com/authors/plainicon', '_system');">Plainicon</a>, all from 
+                        <a href="#" title="FlatIcon" onclick="window.open('http://www.flaticon.com', '_system');">www.flaticon.com</a>, and all licensed by 
+                        <a href="#" title="Creative Commons BY 3.0" onclick="window.open('http://creativecommons.org/licenses/by/3.0/', '_system');">CC 3.0 BY</a>
+                    </p>
+
+                    <hr>
+
+                    <p>This app was made for Technovation Challenge 2016, as a non-profit mobile application.</p>
+                    <p>Copyright &copy 2016 Team Dioversity (Lydia Watson, Joanna Li, Piper Whitehead)</p>
+                    <p></p>
+                </div>  
+            </div>   
+        </div>
+        <!-- the credits and dimmer divs need to appear on top of everything else, including the header and the map, which is why they are at the very beginning of the HTML -->
+        
+        <header class="topBar">
+            <!-- header items for normal mode -->
+            <div class="menuButton" id="searchButton"><img src="img/search.svg" class="icon"></div><!--
+            --><div class="menuButton middle" id="filterButton"  ><img  class="icon" id="cog"></div><!--
+            --><div class="menuButton" id="uploadButton"><img src="img/addLocation.svg" class="icon"></div>
+            
+            
+            <!-- header items when in search mode -->
+            <div class="screenIcon" id="backArrow"><img src="img/backArrow.svg" class="icon backIcon"></div><!--
+            --><div id="searchDiv"><input id="searchIndex" class="search" type="text" placeholder="Enter location..."></div>
+    
+        </header>
+        
+        <!-- hidden buttons for cancels and confirms -->
+        <div class="cancConf indexButton">
+            <button id="cancIndex" class="buttons">Cancel</button>
+            <button id="confIndex" class="buttons">Confirm</button>
+        </div>
+        
+        <!-- contains the map -->
+        <div id="map"></div>
+        
+        
+        <!-- popUp for filters -->
+        <dialog class="popUpWindow" id="popUpFilter">
+            <img src="img/cancelButton.svg" class="popUpCancel" id="filterCancel">
+            <h2 class="filterHeading">Filters</h2>
+            
+            <div class="filterCategory"><p class="filterTitle">Gender:</p></div>
+            <div class="filterChecks">
+                <label><input type="checkbox" id="male"/> Male</label>
+                <br>
+                <label><input type="checkbox" id="fem"/> Female</label>
+                <br>
+                <label><input type="checkbox" id="uni"/> Unisex</label>
+            </div>
+            
+    
+            
+            <div class="filterCategory"><p class="filterTitle">Parent facilities:</p></div>
+            <div class="filterChecks">
+                <label><input type="checkbox" id="mBab"/> In Male</label>
+                <br>
+                <label><input type="checkbox" id="fBab"/> In Female</label>
+                <br>
+                <label><input type="checkbox" id="uBab"/> In Unisex</label>
+            </div>
+            
+            
+            <div class="filterCategory"><p class="filterTitle">Wheelchair access:</p></div>
+            <div class="filterChecks">
+                <label><input type="checkbox" id="wheelchair"/> Yes</label>
+            </div>
+            
+        </dialog>
+        
+        
+        <!-- pop up for info -->
+        <dialog class="popUpWindow" id="popUpInfo">
+            <img src="img/cancelButton.svg" class="popUpCancel" id="infoCancel">
+            <img src="img/editPencil.svg" class="popUpEdit" id="filterEdit">
+            <div class="detailsAddress"><h1 id="address"></h1></div>
+            
+            <p class="detailsTitle">Gender:</p>
+            <div class="detailsChecks">
+                <label><input type="checkbox" id="maleInfo"/> Male</label>
+                <label><input type="checkbox" id="femaleInfo"/> Female</label>
+                <label><input type="checkbox" id="uniInfo"/> Unisex</label>
+            </div>
+            
+            <p class="detailsTitle">Parent Facilities:</p>
+            <div class="detailsChecks">
+                <label><input type="checkbox" id="maleBabyInfo"/> Male</label>
+                <label><input type="checkbox" id="femBabyInfo"/> Female</label>
+                <label><input type="checkbox" id="uniBabyInfo"/> Unisex</label>
+            </div>
+            
+            <p class="detailsTitle">Wheelchair Access:</p>
+            <div class="detailsChecks">
+                <label><input type="checkbox" id="wheelchairInfo"/> Yes</label>
+                
+            </div>
+            
+            <button class="popUpDone" id="doneInfo">Loocate!</button>
+        
+                       
+        </dialog>
+        
+        
+        <img id="creditsButton" src="img/heart.svg">
+        
+        <!--this javascript file is added in by phonegap during build -->
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/home.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6Fb4j6Q1MnyBJg5XCQasf9ykfPwU8eB4&region=NZ&libraries=places&callback=initMap"
+            async defer>
+        </script>
+    </body>
+</html>

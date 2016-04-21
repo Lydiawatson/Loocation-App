@@ -1,0 +1,48 @@
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.dioversity.loocation" version="1.0.0">
+    <name>Loocation</name>
+    <description>Loocation allows you to find the toilet nearest to you that best suits your needs. With filters such as disabled access, gender neutral, or parent-friendly toilets, this app will help you locate quickly and efficiently where to go, when you need to go. This app was made for Technovation Challenge in 2016</description>
+    <author href="https://www.facebook.com/teamdioversity.loocation/" email="47236@diocesan.school.nz">Team Dioversity</author>
+    <content src="index.html"/>
+
+    <preference name="orientation" value="portrait"/>
+    <preference name="disallowOverscroll" value="true"/>
+    <preference name="target-device" value="universal"/>
+    <preference name="fullscreen" value="true"/>
+    <preference name="permissions" value="none"/>
+    <preference name="backgroundColor" value="0x00CCCC"/>
+    <preference name="inAppBrowserStorageEnabled" value="true"/>
+    <preference name="webviewbounce" value="true"/>
+    <preference name="prerendered-icon" value="true"/>
+    <preference name="ios-statusbarstyle" value="black-opaque"/>
+    <preference name="detect-data-types" value="true"/>
+    <preference name="exit-on-suspend" value="false"/>
+    <preference name="show-splash-screen-spinner" value="true"/>
+    <preference name="auto-hide-splash-screen" value="true"/>
+    <preference name="disable-cursor" value="false"/>
+    <preference name="android-minSdkVersion" value="14"/>
+    <preference name="android-installLocation" value="auto"/>
+    <gap:plugin name="org.apache.cordova.battery-status"/>
+    <gap:plugin name="org.apache.cordova.console"/>
+    <gap:plugin name="org.apache.cordova.device"/>
+    <gap:plugin name="org.apache.cordova.dialogs"/>
+    <gap:plugin name="org.apache.cordova.geolocation"/>
+    <gap:plugin name="org.apache.cordova.inappbrowser"/>
+    <gap:plugin name="org.apache.cordova.network-information"/>
+    <gap:plugin name="org.apache.cordova.splashscreen"/>
+    <icon src="icon.png"/>
+    <access origin="*"/>
+    <plugin name="cordova-plugin-whitelist" version="1"/>
+    <allow-intent href="http://*/*"/>
+    <allow-intent href="https://*/*"/>
+    <allow-intent href="tel:*"/>
+    <allow-intent href="sms:*"/>
+    <allow-intent href="mailto:*"/>
+    <allow-intent href="geo:*"/>
+    <platform name="android">
+        <allow-intent href="market:*"/>
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*"/>
+        <allow-intent href="itms-apps:*"/>
+    </platform>
+</widget>
