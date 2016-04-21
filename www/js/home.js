@@ -4,14 +4,23 @@ var geoFireRef = new GeoFire(firebaseRef.child("locations"));
 
 var map;
 var meMarker;
+var radiusInKm = 2
+var geoLoc = [-36.8436, 174.7669]
 
 var geoQuery = geoFireRef.query({
-        center: [-36.8436, 174.7669],
-        radius: 10.5
+        center: geoLoc,
+        radius: radiusInKm
     });
 
 var looArray = [];
-
+var watchPos;
+function showPosition(pos) {
+    if (!searching) {
+        var posNow = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+        meMarker.setPosition(posNow);
+    }
+}
+var searching = false;
 
 var checkValues;
 var infoValues;
@@ -59,21 +68,18 @@ function initMap() {
     
     //if geolocation is working center the map on the user's position
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            var initialLocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
+        navigator.geolocation.getCurrentPosition(function (pos) {
+            var initialLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
             map.setCenter(initialLocation);
-            meMarker.setPosition(initialLocation);
         });
-//        navigator.geolocation.watchPosition(showPosition);
+        watchPos = navigator.geolocation.watchPosition(showPosition);
+        console.log("init " + watchPos);
     }
     
-    function showPosition(position) {
-        var posNow = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    /*meMarkerLoc = function showPosition(pos) {
+        var posNow = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
         meMarker.setPosition(posNow);
-    }
+    }*/
     
     
     
@@ -87,10 +93,31 @@ function initMap() {
             search();
 //    }
     };
+   
+    
+    
+    
+    
+    updateGeo = function() {
+       var latLng = meMarker.getPosition()
+       geoQuery.updateCriteria ({
+           center: [latLng.lat(), latLng.lng()],
+           radius: radiusInKm
+       });
+      
+    }
+    
+   
+    
+    meMarker.addListener('position_changed', updateGeo);
+    
 }
 
  
 function search() {
+    navigator.geolocation.clearWatch(watchPos);
+        meMarkerLoc = null;
+        watchPos = null;
     console.log('yo');
     document.getElementById('searchButton').style.display = 'none';
     var input = document.getElementById('searchIndex');
@@ -109,11 +136,15 @@ function search() {
     };
     
     autocomplete.addListener('place_changed', function() {
+        searching = true;
+        navigator.geolocation.clearWatch(watchPos);
         var place = autocomplete.getPlace().geometry.location;
         map.setCenter(place);
         meMarker.setPosition(place);
         timer = setTimeout(endSearch, 6000)
-    })
+    });
+    
+    
     
 }
 

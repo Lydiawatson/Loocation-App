@@ -1,10 +1,6 @@
-function () {
+function runApp() {
     "use strict";
-
-    function checkIfReady() {
-        //using an event listener to check that the cordova is ready before running other functions ensures that the app cannot run until it is ready to access certain things (like the geolocation plugin), meaning that there will be less chance of bugs occurrsing. 
-        document.addEventListener('deviceready', initMap, false);
-    }
+    initMap();
 
     function initMap() {
         //set up some elements as variables
@@ -194,5 +190,5 @@ function () {
             alert('Unfortunately the Loocation has not saved correctly');
         });   
     }
-    
 }
+

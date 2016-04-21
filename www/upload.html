@@ -71,13 +71,7 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/upload.js"></script>
         
-        <!--this line of code will not work when testing on a browser, because the callback function checks whether the phone is ready before continuing - it will only work after the app has been built by phonegap -->
-<!--        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6Fb4j6Q1MnyBJg5XCQasf9ykfPwU8eB4&region=NZ&libraries=places&callback=checkIfReady"-->
-            async defer>
-        </script>
-        
-        <!-- when testing on a browser use this line instead -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6Fb4j6Q1MnyBJg5XCQasf9ykfPwU8eB4&region=NZ&libraries=places&callback=initMap"
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6Fb4j6Q1MnyBJg5XCQasf9ykfPwU8eB4&region=NZ&libraries=places&callback=runApp"
             async defer>
         </script>
     </body>
